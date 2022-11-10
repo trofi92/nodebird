@@ -19,5 +19,8 @@
     "nunjucks": "^3.2.3",
     "sequelize": "^6.25.5",
     "sequelize-cli": "^6.5.2"
+  },
+  "devDependencies": {
+    "chokidar": "^3.5.3"
   }
 }

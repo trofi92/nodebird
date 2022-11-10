@@ -2,11 +2,12 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const path = require("path");
-const session = "express-session";
+const session = require("express-session");
 const nunjucks = require("nunjucks");
 require("dotenv").config();
 
 const pageRouter = require("./routes/page");
+const { sequelize } = require("./models");
 
 const app = express();
 app.set("port", process.env.PORT || 8001);
@@ -15,6 +16,14 @@ nunjucks.configure("views", {
   express: app,
   watch: true,
 });
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log("DB Connected");
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
@@ -33,7 +42,7 @@ app.use(
   })
 );
 
-app.use("/", pageRouter());
+app.use("/", pageRouter);
 
 app.use((req, res, next) => {
   const error = new Error(
