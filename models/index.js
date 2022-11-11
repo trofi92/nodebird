@@ -1,5 +1,3 @@
-"use strict";
-
 const Sequelize = require("sequelize");
 const env = process.env.NODE_ENV || "development";
 const config = require("../config/config")[env];
@@ -24,5 +22,9 @@ db.Hashtag = Hashtag;
 User.init(sequelize);
 Post.init(sequelize);
 Hashtag.init(sequelize);
+
+User.associate(db);
+Post.associate(db);
+Hashtag.associate(db);
 
 module.exports = db;
