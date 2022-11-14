@@ -1,11 +1,11 @@
 const express = require("express");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const { Post, User, Hashtag } = require("../models");
-const { hash } = require("bcrypt");
 
 const router = express.Router();
 
 router.use((req, res, next) => {
+  console.log(req.user);
   res.locals.user = req.user;
   res.locals.followerCount = req.user ? req.user.Followers.length : 0;
   res.locals.followingCount = req.user
@@ -14,6 +14,7 @@ router.use((req, res, next) => {
   res.locals.followerIdList = req.user
     ? req.user.Followings.map((f) => f.id)
     : [];
+  ``;
   next();
 });
 
@@ -30,7 +31,7 @@ router.get("/", async (req, res, next) => {
     const posts = await Post.findAll({
       include: {
         model: User,
-        attriutes: ["id", "nick"],
+        attributes: ["id", "nick"],
       },
       order: [["createdAt", "DESC"]],
     });
@@ -43,6 +44,7 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
+
 router.get("/hashtag", async (req, res, next) => {
   const query = req.query.hashtag;
   if (!query) {
@@ -56,8 +58,9 @@ router.get("/hashtag", async (req, res, next) => {
     if (hashtag) {
       posts = await hashtag.getPosts({ include: [{ model: User }] });
     }
+
     return res.render("main", {
-      title: `${query}|NodeBird`,
+      title: `${query} | NodeBird`,
       twits: posts,
     });
   } catch (error) {

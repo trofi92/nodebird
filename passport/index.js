@@ -15,6 +15,11 @@ module.exports = () => {
         {
           model: User,
           attributes: ["id", "nick"],
+          as: "Followers",
+        },
+        {
+          model: User,
+          attributes: ["id", "nick"],
           as: "Followings",
         },
       ],
