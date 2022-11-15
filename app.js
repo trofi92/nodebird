@@ -25,7 +25,7 @@ nunjucks.configure("views", {
   watch: true,
 });
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log("DB Connected");
   })
